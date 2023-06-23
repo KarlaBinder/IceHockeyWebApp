@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../images/team_select_back.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.container .picture-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+
+.container .picture-container img {
+  width: 450px;
+  height: 450px;
+  margin: 0 -100px;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
+}
+
+.container .picture-container img:hover {
+  transform: translateY(-5px);
+}
+
+.container .picture-container img::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.container .picture-container img:hover::before {
+  opacity: 1;
+}
+

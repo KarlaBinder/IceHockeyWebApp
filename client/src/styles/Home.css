@@ -1,0 +1,33 @@
+.home-container {
+    background-image: url('../images/hockey_player_final3.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+
+  .text-container {
+    margin: 100px 20px;
+    color: white;
+    font-size: 32px; 
+  }
+
+  .button-container{
+    margin-top: 40px;
+    margin-left: 250px;
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    width: 150px;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .bottom-text {
+    position: absolute;
+    bottom: 120px;
+    left: 20px;
+  }
