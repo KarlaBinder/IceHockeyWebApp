@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/UserLineupInput.css';
+
 
 function UserLineupInput() {
   const [forwardLineup, setForwardLineup] = useState(['', '', '']);

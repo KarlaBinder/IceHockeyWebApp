@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/UserLineupInput.css';
+
 
 function GoldenKnights() {
   const teamName='Golden Knights';

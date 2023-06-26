@@ -1,24 +1,16 @@
 const mongoose = require('mongoose');
 
-const userSelectionSchema = new mongoose.Schema({
+const lineupSchema = new mongoose.Schema({
   teamName: {
     type: String,
     required: true,
   },
   gameDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   forwardLineup: {
-    type: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        // Add any additional fields for forward player attributes
-      },
-    ],
+    type: [String], // Update the type to an array of strings
     required: true,
     validate: {
       validator: (value) => value.length === 3,
@@ -26,15 +18,7 @@ const userSelectionSchema = new mongoose.Schema({
     },
   },
   defensiveLineup: {
-    type: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        // Add any additional fields for defensive player attributes
-      },
-    ],
+    type: [String], // Update the type to an array of strings
     required: true,
     validate: {
       validator: (value) => value.length === 2,
@@ -44,8 +28,10 @@ const userSelectionSchema = new mongoose.Schema({
   // Add any additional fields for user selection
 });
 
-const UserSelection = mongoose.model('UserSelection', userSelectionSchema);
+const Lineup = mongoose.model('Lineup', lineupSchema);
 
-module.exports = UserSelection;
+module.exports = Lineup;
+
+
 
 

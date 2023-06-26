@@ -6,8 +6,8 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: black;
-    padding: 20px 16px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 16px;
   }
   
   .navbar-logo img {

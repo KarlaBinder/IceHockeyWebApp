@@ -1,9 +1,13 @@
 .home-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     background-image: url('../images/hockey_player_final3.png');
-    background-size: contain;
+    background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
   }
 
   .text-container {

@@ -12,27 +12,26 @@ import MainLayout from '../layout/MainLayout';
 
 const TeamSelection = () => {  
   return (
-  <div className="container">
+    <div className="container">
     <MainLayout> 
-    <div className="TeamSelection">       
       <h1>Select a Team:</h1>
       <div className="picture-container">
         <Link to="/carolina-hurricanes">
-            <img src={carolinaHurricanesImage} alt="Carolina Hurricanes"/>
+          <img src={carolinaHurricanesImage} alt="Carolina Hurricanes"/>
         </Link>
         <Link to="/boston-bruins">
-            <img src={bostonBruinsImage} alt="Boston Bruins"/>
+          <img src={bostonBruinsImage} alt="Boston Bruins"/>
         </Link>
         <Link to="/golden-knights">
-            <img src={goldenKnightsImage} alt="Golden Knights"/>
+          <img src={goldenKnightsImage} alt="Golden Knights"/>
         </Link>
         <Link to="/colorado-avalanche">
-            <img src={coloradoAvalancheImage} alt="Colorado Avalanche"/>   
+          <img src={coloradoAvalancheImage} alt="Colorado Avalanche"/>   
         </Link>
       </div>
-    </div>
     </MainLayout>
-    </div>
+  </div>
+  
   );
 };
 
