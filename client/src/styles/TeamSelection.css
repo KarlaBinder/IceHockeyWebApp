@@ -1,49 +1,156 @@
 .container {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100vh; 
+  overflow-y: scroll;
   background-image: url('../images/team_select_back.png');
   background-size: cover;
   background-position: center;
-}
-
-
-.container .picture-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
-.container .picture-container img {
-  width: 450px;
-  height: 450px;
-  margin: 0 -100px;
-  transition: transform 0.3s ease-in-out;
-  position: relative;
-  z-index: 1;
-}
-
-.container .picture-container img:hover {
-  transform: translateY(-5px);
-}
-
-.container .picture-container img::before {
-  content: '';
-  position: absolute;
+.team-navbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  z-index: -1;
-  transition: opacity 0.3s ease-in-out;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
-.container .picture-container img:hover::before {
-  opacity: 1;
+.team-navmenu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
+
+.team-navmenu li a {
+  text-decoration: none;
+  color: white;
+  font-family: 'Lucida Sans';
+  text-transform: uppercase;
+}
+
+.logo-and-dropdown {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center vertically */
+  justify-content: space-between; /* Add space between the logo and dropdown */
+  width: 200px; /* Adjust the width as needed */
+}
+
+.home-logo {
+  /* Add styles for your logo */
+}
+
+.profile-dropdown {
+  /* Add styles for your profile dropdown */
+}
+
+.profile-dropbtn {
+  /* Add styles for the profile dropdown button */
+}
+
+.profile-dropdown-content {
+  /* Add styles for the dropdown content */
+}
+
+.title-container {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.picture-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.picture-container a {
+  text-decoration: none;
+}
+
+.picture-box {
+  margin: 10px;
+}
+
+.picture-box img {
+  width: 200px;
+  height: auto;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.team-footer {
+  background:rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.teamfooter-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .title-container {
+    margin-top: 20px; 
+  }
+
+  .picture-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .picture-box {
+    flex: 1; 
+    margin: 10px; 
+  }
+}
+
+@media (max-width: 460px) {
+  .title-container {
+    margin-top: 700px; 
+  }
+
+  .picture-container {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .picture-box {
+    margin: 10px; 
+    max-width: 80%; 
+  }
+
+  .picture-box img {
+    width: 100%; 
+    height: auto; 
+  }
+}
+
+
+
+
+
+
 
 

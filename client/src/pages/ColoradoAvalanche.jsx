@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/ColoradoAvalanche.css'
 import MainLayout from '../layout/MainLayout'
+import ResultModal from '../components/ResultModal'; // Adjust the path as needed
 
 function ColoradoAvalanche() {
   const [gameDates, setGameDates] = useState([]);
@@ -11,6 +12,8 @@ function ColoradoAvalanche() {
   const [selectedForwardPlayers, setSelectedForwardPlayers] = useState(['', '', '']);
   const [selectedDefensivePlayers, setSelectedDefensivePlayers] = useState(['', '']);
   const [lineupMatchup, setLineupMatchup] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [setResultModalContent] = useState('');
 
   useEffect(() => {
     fetchGameDates();
@@ -37,7 +40,8 @@ function ColoradoAvalanche() {
     try {
       const response = await axios.get('http://localhost:5000/forwardplayers', {
         params: {
-          gameDate: selectedDate
+          gameDate: selectedDate,
+          teamName: 'Colorado Avalanche'
         }
       });
       const players = response.data;
@@ -51,7 +55,8 @@ function ColoradoAvalanche() {
     try {
       const response = await axios.get('http://localhost:5000/defensiveplayers', {
         params: {
-          gameDate: selectedDate
+          gameDate: selectedDate,
+          teamName: 'Colorado Avalanche'
         }
       });
       const players = response.data;
@@ -113,20 +118,41 @@ function ColoradoAvalanche() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Retrieve the user ID from local storage
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error('User ID not found in local storage');
+      return;
+    }
+    console.log('UserId:',userId);
+    const token = localStorage.getItem('authToken');
+     const headers = {
+     Authorization: `Bearer ${token}`,
+};
+
     const data = {
       teamName: 'Colorado Avalanche',
       gameDate: selectedGameDate,
       forwardLineup: selectedForwardPlayers.filter((player) => player !== '').map((playerId) => forwardPlayers.find((p) => p._id === playerId).playerName),
-      defensiveLineup: selectedDefensivePlayers.filter((player) => player !== '').map((playerId) => defensivePlayers.find((p) => p._id === playerId).playerName)
+      defensiveLineup: selectedDefensivePlayers.filter((player) => player !== '').map((playerId) => defensivePlayers.find((p) => p._id === playerId).playerName),
+      userId: userId // Include the user's ID in the lineup data
     };
 
     try {
-      await axios.post('http://localhost:5000/saveSelection', data);
+      await axios.post('http://localhost:5000/saveSelection', data, { headers });
       console.log('Selection saved successfully');
     } catch (error) {
       console.log(error);
     }
   };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
 
   const handleCheck = async () => {
     try {
@@ -152,9 +178,14 @@ function ColoradoAvalanche() {
       const matchup = checkLineupMatch(lineup, selectedForwardLineup, selectedDefensiveLineup);
   
       // Display the results
-      console.log('Selected Forward Lineup:', selectedForwardLineup);
-      console.log('Selected Defensive Lineup:', selectedDefensiveLineup);
-      console.log('Lineup Matchup:', matchup);
+      //console.log('Selected Forward Lineup:', selectedForwardLineup);
+      //console.log('Selected Defensive Lineup:', selectedDefensiveLineup);
+      //console.log('Lineup Matchup:', matchup);
+
+     // Inside your handleCheck function
+      setResultModalContent(matchup);
+      openModal();
+
   
     } catch (error) {
       console.log(error);
@@ -213,23 +244,26 @@ function ColoradoAvalanche() {
     return true;
   };
 
+
   return (
     <div className="background-container">
     <div className="container">
       <MainLayout>
       <h2>Game Lineup</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="gameDate">Select Game Date:</label>
+      <div>
+        <label htmlFor="gameDate">Select Game Date:</label>
           <select id="gameDate" value={selectedGameDate} onChange={handleGameDateChange}>
-            <option value="">Select Date</option>
-            {gameDates.map((date) => (
-              <option key={date._id} value={date.date}>
-                {date.gameDate}
-              </option>
+            <option value="" hidden>
+              ---
+            </option>
+              {gameDates.map((date) => (
+            <option key={date._id} value={date.date}>
+              {date.gameDate}
+            </option>
             ))}
           </select>
-        </div>
+      </div>
         {selectedGameDate && (
           <div className="lineup-section">
             <h3>Forward Lineup</h3>
@@ -241,7 +275,7 @@ function ColoradoAvalanche() {
                   value={selectedPlayer}
                   onChange={(e) => handleForwardPlayerChange(e, index)}
                 >
-                  <option value="">Select Player</option>
+                  <option value="">---</option>
                   {forwardPlayers.map((player) => (
                     <option key={player._id} value={player._id}>
                       {player.playerName}
@@ -263,7 +297,7 @@ function ColoradoAvalanche() {
                   value={selectedPlayer}
                   onChange={(e) => handleDefensivePlayerChange(e, index)}
                 >
-                  <option value="">Select Player</option>
+                  <option value="">---</option>
                   {defensivePlayers.map((player) => (
                     <option key={player._id} value={player._id}>
                       {player.playerName}
@@ -277,10 +311,13 @@ function ColoradoAvalanche() {
         <div className="buttons">
          <button type="submit">Save Selection</button>
          <button type="button" onClick={handleCheck}>Check</button>
+         <ResultModal
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            matchup={lineupMatchup}
+          />
         </div> 
        <div>
-        {lineupMatchup && <p>{lineupMatchup}</p>}
-
     </div>
       </form>
       </MainLayout>

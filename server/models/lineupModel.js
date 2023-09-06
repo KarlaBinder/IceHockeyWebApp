@@ -10,7 +10,7 @@ const lineupSchema = new mongoose.Schema({
     required: true,
   },
   forwardLineup: {
-    type: [String], // Update the type to an array of strings
+    type: [String], 
     required: true,
     validate: {
       validator: (value) => value.length === 3,
@@ -18,14 +18,17 @@ const lineupSchema = new mongoose.Schema({
     },
   },
   defensiveLineup: {
-    type: [String], // Update the type to an array of strings
+    type: [String], 
     required: true,
     validate: {
       validator: (value) => value.length === 2,
       message: 'Defensive lineup must have exactly 2 players',
     },
   },
-  // Add any additional fields for user selection
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
 const Lineup = mongoose.model('Lineup', lineupSchema);

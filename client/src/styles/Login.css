@@ -1,0 +1,69 @@
+.box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-image: url('../images/hockey_player_final3.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .box-elements {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 70%; /* Adjust the width as needed */
+    margin: 150px auto; /* Center the container horizontally */
+  }
+
+  .login-text{
+    color: white;
+    margin-bottom: 15px;
+    margin-left: 70px;
+    font-size: 35px;
+    font-weight: bold;
+    font-family: 'Times New Roman';
+  }
+
+  .input{
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  font-size: 16px;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  cursor: pointer;
+  }
+
+  .input-text:hover, button[type="button"]:hover {
+    background-color: #1a2833; /* Slightly darker blue on hover */
+  }
+
+  .login-button{
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  font-size: 16px;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  cursor: pointer;
+  }
+
+  .login-button[type="submit"]:hover, button[type="button"]:hover {
+    background-color: #1a2833; /* Slightly darker blue on hover */
+  }
+
+  .text-container p{
+    margin-top: 30px;
+    font-size: 25px;
+  }

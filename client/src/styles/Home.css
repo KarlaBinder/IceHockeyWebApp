@@ -9,6 +9,33 @@
     background-size: cover;
     background-position: center;
   }
+  .navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+  
+  .navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0%;
+  }
+  
+  .navbar-menu li a {
+    text-decoration: none;
+    color: white;
+    font-family: 'Lucida Sans';
+    text-transform: uppercase;
+  }
 
   .text-container {
     margin: 100px 20px;
@@ -16,22 +43,178 @@
     font-size: 32px; 
   }
 
+  /* Add this CSS to your stylesheet */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropbtnLog{
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  transition-duration: 0.4s;
+  padding: 10px 20px;
+  cursor: pointer;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+.dropbtnReg {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  padding: 10px 20px;
+  cursor: pointer;
+  vertical-align: middle;
+  text-transform: uppercase;
+  margin-right: 20px;
+}
+.dropdown-content label {
+  margin-inline-end: auto;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: transparent;
+  color: rgb(255, 98, 0);
+  border: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  transition-duration: 0.4s;
+  min-width: 160px;
+  z-index: 1;
+  left: -50px; /* Adjust this value as needed to position the dropdown */
+}
+
+.dropdown-content form {
+  padding: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Style form inputs and buttons */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+}
+
+.login-button,
+.register-button {
+  background-color: rgb(255, 98, 0); /* Orange background color */
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 42x;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  padding: 5px 21px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 5px; /* Margin top of 5px */
+}
+
+
+.login-button:hover,
+.register-button:hover {
+  background-color: #1a2833;
+}
+
+/* Add more CSS to style your form as needed */
+
+
+  .logout{
+    text-decoration: none;
+    color: white;
+    font-family: 'Lucida Sans';
+    text-transform: uppercase;
+    font-size: 17px; 
+    background-color: transparent;
+    border: none;
+  }
+
   .button-container{
     margin-top: 40px;
     margin-left: 250px;
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: transparent;
+    color: white;
     padding: 10px 20px;
-    border: none;
+    border: 2px solid rgb(255, 98, 0);
     font-size: 16px;
     width: 150px;
     text-align: center;
     border-radius: 4px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 4px rgb(255, 98, 0);
+    transition-duration: 0.4s;
+    cursor: pointer;
   }
+
+  .button-container:hover {
+    background-color: rgb(255, 98, 0); 
+    color: white;
+  }
+
 
   .bottom-text {
     position: absolute;
     bottom: 120px;
     left: 20px;
+  }
+
+  .footer {
+    background:rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .home-container {
+      background-position: center right;
+      }
+    .text-container {
+      font-size: 24px;
+    }
+    
+    .button-container {
+      margin: 20px auto;
+      font-size: 14px;
+      width: 120px;
+      text-align: center;
+    }
+    
+    .bottom-text {
+      bottom: 60px;
+      left: 10px;
+    }
+  }
+
+  @media (max-width: 590px) {
+    .button-container {
+      display: flex;
+      justify-content: flex-start;
+    }
   }
