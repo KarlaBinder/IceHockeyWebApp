@@ -8,15 +8,30 @@ import '../styles/Home.css';
 function Home() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profileUsername, setProfileUsername] = useState(''); // Define profileUsername state
 
   // Fetch the user's login status from the server
   useEffect(() => {
     fetch('http://localhost:5000/login-status')
       .then(response => response.json())
       .then(data => {
-        setIsAuthenticated(data.isAuthenticated);
+        setIsAuthenticated(data.isAuthenticated); 
       });
   }, []);
+
+  // Send a GET request to your server to get the username
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    fetch(`http://localhost:5000/getUsername?userId=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        setProfileUsername(data.username); // Set the profileUsername state
+      })
+      .catch(error => {
+        console.error('Error fetching username:', error);
+      });
+  }, []); // Empty dependency array to run this effect only once
+
 
   const handleButtonClick = () => {
     if (isAuthenticated) {
@@ -61,6 +76,7 @@ function Home() {
 
       // Store the token in local storage or cookies for future use
       localStorage.setItem('authToken', token); // Example: Storing in local storage
+      console.log('Token stored in local storage:', token);
       localStorage.setItem('userId', userId); // Store the user ID
 
       // Update isAuthenticated to true
@@ -142,8 +158,8 @@ function Home() {
             <>
               <li>
               <div className="dropdown">
-                <button className="dropbtn">Profile</button>
-                <div className="dropdown-content">
+              <button className="profile-dropbtn">{`${profileUsername}`}</button>
+                  <div className="profile-dropdown-content">
                   <Link to="/profile">View Profile</Link>
                   <button className='logout' onClick={handleLogoutClick}>Logout</button>
                 </div>

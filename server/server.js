@@ -35,22 +35,27 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   });
 
   const verifyToken = (req, res, next) => {
+    console.log('Verifying token...');
     const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
   
     if (!token) {
+      console.log('Token missing or invalid');
       return res.status(401).json({ message: 'Unauthorized' });
     }
   
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
+        console.log('Token verification failed:', err);
         return res.status(401).json({ message: 'Invalid token' });
       }
   
       // The token is valid; you can access the payload (e.g., decoded.userId)
       req.userId = decoded.userId;
+      console.log('Token verification successful. User ID:', req.userId);
       next();
     });
   };
+  
 
   app.post('/registration', async (req, res) => {
     try {
@@ -109,7 +114,7 @@ app.post('/login', async (req, res) => {
 
     console.log('Token generated:', token);
 
-    res.status(200).json({ message: 'Login successful', token, userId: user._id });
+    res.status(200).json({ message: 'Login successful', userId: user._id, token });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed' });
@@ -134,6 +139,27 @@ app.get('/login-status', verifyToken, (req, res) => {
   // The user is authenticated based on the token verification (verifyToken middleware)
   console.log('User ID:', req.userId);
   res.json({ isAuthenticated: true });
+});
+
+// GET endpoint to retrieve a username by user ID
+app.get('/getUsername', async (req, res) => {
+  const userId = req.query.userId; // Get the user ID from the query parameter
+
+  try {
+    // Query the database to find the user by ID
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      // User not found
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Send the username in the response
+    res.json({ username: user.username });
+  } catch (error) {
+    console.error('Error fetching username:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
   app.get('/gamedates', (req, res) => {
@@ -236,6 +262,18 @@ app.get('/login-status', verifyToken, (req, res) => {
         res.status(500).json({ error: 'Failed to fetch lineup' });
       });
   });
+
+  // Retrieve previous lineups for a user (requires authentication)
+app.get('/getPreviousLineups', verifyToken, async (req, res) => {
+  try {
+    const userId = req.userId; // User ID obtained from token
+    const previousLineups = await Lineup.find({ userId });
+    res.status(200).json(previousLineups);
+  } catch (error) {
+    console.error('Error fetching previous lineups:', error.message);
+    res.status(500).json({ message: 'Error fetching previous lineups' });
+  }
+});
 
 
 

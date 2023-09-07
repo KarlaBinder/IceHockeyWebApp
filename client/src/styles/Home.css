@@ -134,7 +134,45 @@ input[type="email"] {
 }
 
 /* Add more CSS to style your form as needed */
+.profile-dropbtn{
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  padding: 10px 20px;
+  cursor: pointer;
+  vertical-align: middle;
+  text-transform: uppercase;
+  margin-right: 20px;
+}
 
+.profile-dropdown-content {
+  display: none;
+  position: absolute;
+  background: transparent;
+  color: rgb(255, 98, 0);
+  border: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  transition-duration: 0.4s;
+  min-width: 160px;
+  z-index: 1;
+  right: 0; /* Adjust this value to control the position from the right */
+  top: 100%; /* Position the dropdown below the button */
+}
+
+/* Rest of your CSS remains the same */
+
+
+.profile-dropdown-content form {
+  padding: 10px;
+}
+
+.dropdown:hover .profile-dropdown-content,
+.dropdown:hover .profile-dropbtn {
+  display: block;
+}
 
   .logout{
     text-decoration: none;
