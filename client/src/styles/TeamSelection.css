@@ -15,7 +15,7 @@
 
 .team-navbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* Add space between elements */
   align-items: center;
   position: fixed;
   top: 0;
@@ -25,39 +25,59 @@
 }
 
 .team-navmenu {
-  list-style-type: none;
-  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 10px;
   margin: 0;
 }
 
-.team-navmenu li a {
+.team-navmenu li {
+  display: flex;
+  align-items: center;
+}
+
+.home-logo {
+  margin-left: 20px;
+  margin-right: 1300px;
+  height: 50px;
+  width:50px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-dropbtn{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: transparent;
+  color: rgb(255, 98, 0);
+  border: none;
+  transition-duration: 0.4s;
+  min-width: 160px;
+  z-index: 1;
+  left: -10px; /* Adjust this value as needed to position the dropdown */
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.drop-con{
   text-decoration: none;
   color: white;
   font-family: 'Lucida Sans';
   text-transform: uppercase;
-}
-
-.logo-and-dropdown {
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Center vertically */
-  justify-content: space-between; /* Add space between the logo and dropdown */
-  width: 200px; /* Adjust the width as needed */
-}
-
-.home-logo {
-  /* Add styles for your logo */
-}
-
-.profile-dropdown {
-  /* Add styles for your profile dropdown */
-}
-
-.profile-dropbtn {
-  /* Add styles for the profile dropdown button */
-}
-
-.profile-dropdown-content {
-  /* Add styles for the dropdown content */
+  font-size: 17px; 
+  background-color: transparent;
+  border: none;
 }
 
 .title-container {

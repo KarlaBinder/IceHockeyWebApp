@@ -10,14 +10,22 @@ function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profileUsername, setProfileUsername] = useState(''); // Define profileUsername state
 
-  // Fetch the user's login status from the server
   useEffect(() => {
-    fetch('http://localhost:5000/login-status')
-      .then(response => response.json())
-      .then(data => {
-        setIsAuthenticated(data.isAuthenticated); 
-      });
+    // Check if the user is authenticated by inspecting the JWT token in local storage
+    const authToken = localStorage.getItem('authToken');
+    
+    if (authToken) {
+      // User is authenticated
+      setIsAuthenticated(true);
+      
+      // Optionally, fetch the user's profile data or perform other actions
+      // You can also consider decoding the token to get user information if needed
+    } else {
+      // User is not authenticated
+      setIsAuthenticated(false);
+    }
   }, []);
+  
 
   // Send a GET request to your server to get the username
   useEffect(() => {
@@ -139,7 +147,7 @@ function Home() {
 
   const handleLogoutClick = () => {
     // Clear the JWT token from local storage
-    localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
   
     // Update the isAuthenticated state or perform any other necessary actions
     setIsAuthenticated(false);

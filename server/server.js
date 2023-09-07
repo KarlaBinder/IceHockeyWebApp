@@ -135,12 +135,12 @@ app.get('/protected', verifyToken, (req, res) => {
   // Return the user's login status to the client
  // res.json({ isAuthenticated });
 //});
-app.get('/login-status', verifyToken, (req, res) => {
+/*app.get('/login-status', verifyToken, (req, res) => {
   // The user is authenticated based on the token verification (verifyToken middleware)
   console.log('User ID:', req.userId);
   res.json({ isAuthenticated: true });
 });
-
+*/
 // GET endpoint to retrieve a username by user ID
 app.get('/getUsername', async (req, res) => {
   const userId = req.query.userId; // Get the user ID from the query parameter

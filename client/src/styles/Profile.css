@@ -1,26 +1,167 @@
 .profile-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .lineups-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .lineups-list li {
-    font-size: 18px;
-    margin: 5px 0;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-image: url('../images/profile.png');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.home {
+  float: left;
+  height: 50px;
+  width: 50px;
+}
+
+.top-text {
+  margin-top: 60px;
+  font-size: 28px;
+  margin-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  text-transform: uppercase;
+  margin-right: 20px;
+}
+
+.previous-lineups {
+  font-size: 24px;
+  margin-top: 100px;
+  text-transform: uppercase;
+}
+
+.lineup-slider {
+  position: relative;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.lineups-container {
+  display: flex;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  justify-content: center; /* Center the items horizontally */
+  align-items: center; /* Center the items vertically */
+}
+
+/* Add the active class to style the currently visible lineup box */
+.lineup-box.active {
+  display: block; /* Show the lineup box */
+}
+
+.lineup-box {
+  width: 50%;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  text-align: left;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-right: 20px;
+  display: none;
+}
+/* Style for lineup-box */
+.lineup-box {
+  margin-top: 40px;
+  font-size: 28px;
+  margin-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  text-transform: uppercase;
+  margin-right: 20px;
+}
+
+/* Active lineup-box */
+.lineup-box.active {
+  display: block; /* Show active lineup box */
+}
+
+/* Style for lineup header */
+.lineup-header {
+  margin-bottom: 10px;
+}
+
+.team-name, .game-date {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Style for player list */
+.player-list {
+  margin-bottom: 10px;
+}
+
+.list-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #ff6600; /* Orange text color */
+  font-weight: bold;
+}
+
+/* Style for player ul and li */
+.player-ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.player-li {
+  margin-left: 200px;
+  font-size: 16px;
+  list-style: none;
+}
+/* Style for highlighted text */
+.highlight-orange {
+  color: #ff6600; /* Orange text color */
+  font-weight: bold;
+}
+
+.highlight-blue {
+  color: #1a1a1a; /* Dark blue text color */
+  font-weight: bold;
+}
+
+/* Rest of the previous styles for lineup-box, lineup-header, player list, and player li remain the same */
+
+
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 10px;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+.slider-prev-button {
+  left: 0;
+  margin-left: 80px;
+}
+
+.slider-next-button {
+  right: 0;
+  margin-right: 80px;
+}
+
   

@@ -1,7 +1,7 @@
 // TeamSelection.js
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React,{ useState} from 'react';
+import { Link , useNavigate} from 'react-router-dom';
 import '../styles/TeamSelection.css';
 import carolinaHurricanesImage from '../images/carolina_hurricanes.png';
 import bostonBruinsImage from '../images/boston_bruins.png';
@@ -9,13 +9,25 @@ import goldenKnightsImage from '../images/vegas_knights.png';
 import coloradoAvalancheImage from '../images/colorado_avalanche.png';
 import homeLogo from '../images/home-icon.png';
 
-function handleHomePageClick(event) {
-  event.preventDefault(); // Prevent the default behavior of following the link
-  window.location.href = "/"; // Navigate to the homepage by changing the URL
-}
+function TeamSelection() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Access the navigate function from useNavigate
+  const navigate = useNavigate();
 
-
-const TeamSelection = () => {  
+  function handleHomePageClick() {
+    navigate('/'); // Use the navigate function for navigation
+  }
+  const handleLogoutClick = () => {
+    // Clear the JWT token from local storage
+    localStorage.removeItem('authToken');
+  
+    // Update the isAuthenticated state or perform any other necessary actions
+    setIsAuthenticated(false);
+  
+    // Optionally, navigate the user to a different page (e.g., home page)
+    navigate('/');
+  };
+    
   return (
     <div className="container">
       <div className='team-navbar'>
@@ -24,13 +36,13 @@ const TeamSelection = () => {
               <a href="/" onClick={handleHomePageClick}>
                 <img className="home-logo" src={homeLogo} alt="Home" />
               </a>
-              <div className="profile-dropdown logo-and-dropdown">
+              <div className="dropdown">
                 <button className="profile-dropbtn">Profile</button>
                 <div className="profile-dropdown-content">
-                  <Link to="/profile">View Profile</Link>
-                  <button className='logout' >Logout</button>
+                  <Link to="/profile" className="drop-con">View Profile</Link>
+                  <button className='drop-con' onClick={handleLogoutClick}>Logout</button>
                 </div>
-              </div>
+                </div>
             </li>
           </ul>
        </div>

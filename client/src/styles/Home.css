@@ -44,10 +44,10 @@
   }
 
   /* Add this CSS to your stylesheet */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
 .dropbtnLog{
   background-color: rgba(0, 0, 0, 0.5);
   color: white;

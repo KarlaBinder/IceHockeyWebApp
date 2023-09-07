@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link , useNavigate} from 'react-router-dom';
 import '../styles/ColoradoAvalanche.css'
-import MainLayout from '../layout/MainLayout'
 import ResultModal from '../components/ResultModal'; // Adjust the path as needed
+import homeLogo from '../images/home-icon.png';
 
 function ColoradoAvalanche() {
   const [gameDates, setGameDates] = useState([]);
@@ -13,7 +14,24 @@ function ColoradoAvalanche() {
   const [selectedDefensivePlayers, setSelectedDefensivePlayers] = useState(['', '']);
   const [lineupMatchup, setLineupMatchup] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [setResultModalContent] = useState('');
+  const [resultModalContent, setResultModalContent] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Access the navigate function from useNavigate
+  const navigate = useNavigate();
+
+  function handleHomePageClick() {
+    navigate('/'); // Use the navigate function for navigation
+  }
+  const handleLogoutClick = () => {
+    // Clear the JWT token from local storage
+    localStorage.removeItem('authToken');
+  
+    // Update the isAuthenticated state or perform any other necessary actions
+    setIsAuthenticated(false);
+  
+    // Optionally, navigate the user to a different page (e.g., home page)
+    navigate('/');
+  };
 
   useEffect(() => {
     fetchGameDates();
@@ -166,21 +184,23 @@ function ColoradoAvalanche() {
       const lineup = response.data;
   
       // Convert the selected forward lineup from IDs to names
-      const selectedForwardLineup = selectedForwardPlayers.map((playerId) =>
-        forwardPlayers.find((p) => p._id === playerId).playerName
-      );
-  
-      // Convert the selected defensive lineup from IDs to names
-  
-     const selectedDefensiveLineup=selectedDefensivePlayers.map((playerId)=>
-     defensivePlayers.find((p)=>p._id===playerId).playerName);
+    const selectedForwardLineup = selectedForwardPlayers
+    .filter((playerId) => playerId) // Filter out empty player IDs
+    .map((playerId) => {
+      const player = forwardPlayers.find((p) => p._id === playerId);
+      return player ? player.playerName : ''; // Handle cases where player is not found
+    });
+
+  // Convert the selected defensive lineup from IDs to names
+  const selectedDefensiveLineup = selectedDefensivePlayers
+    .filter((playerId) => playerId) // Filter out empty player IDs
+    .map((playerId) => {
+      const player = defensivePlayers.find((p) => p._id === playerId);
+      return player ? player.playerName : ''; // Handle cases where player is not found
+    });
+
       // Check if the selected lineup matches any type of lineup
       const matchup = checkLineupMatch(lineup, selectedForwardLineup, selectedDefensiveLineup);
-  
-      // Display the results
-      //console.log('Selected Forward Lineup:', selectedForwardLineup);
-      //console.log('Selected Defensive Lineup:', selectedDefensiveLineup);
-      //console.log('Lineup Matchup:', matchup);
 
      // Inside your handleCheck function
       setResultModalContent(matchup);
@@ -248,7 +268,22 @@ function ColoradoAvalanche() {
   return (
     <div className="background-container">
     <div className="container">
-      <MainLayout>
+    <div className='team-navbar'>
+        <ul className='team-navmenu'>
+              <li>
+              <a href="/" onClick={handleHomePageClick}>
+                <img className="home-logo" src={homeLogo} alt="Home" />
+              </a>
+              <div className="dropdown">
+                <button className="profile-dropbtn">Profile</button>
+                <div className="profile-dropdown-content">
+                  <Link to="/profile" className="drop-con">View Profile</Link>
+                  <button className='drop-con' onClick={handleLogoutClick}>Logout</button>
+                </div>
+                </div>
+            </li>
+          </ul>
+       </div>
       <h2>Game Lineup</h2>
       <form onSubmit={handleSubmit}>
       <div>
@@ -320,7 +355,11 @@ function ColoradoAvalanche() {
        <div>
     </div>
       </form>
-      </MainLayout>
+      <footer className="team-footer">
+          <div className="teamfooter-content">
+            <p>&copy; 2023 FERIT All rights reserved.</p>
+          </div>
+        </footer>
     </div>
     </div>
   );
