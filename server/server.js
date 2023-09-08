@@ -126,21 +126,7 @@ app.get('/protected', verifyToken, (req, res) => {
   res.json({ message: 'This is a protected route', userId: req.userId });
 });
 
-//app.get('/login-status', (req, res) => {
-  // Get the user's login status from the database
- // const isAuthenticated = User.findOne({ _id: req.userId }).then(
- //   user => user ? user.isAuthenticated : false
- // );
 
-  // Return the user's login status to the client
- // res.json({ isAuthenticated });
-//});
-/*app.get('/login-status', verifyToken, (req, res) => {
-  // The user is authenticated based on the token verification (verifyToken middleware)
-  console.log('User ID:', req.userId);
-  res.json({ isAuthenticated: true });
-});
-*/
 // GET endpoint to retrieve a username by user ID
 app.get('/getUsername', async (req, res) => {
   const userId = req.query.userId; // Get the user ID from the query parameter
@@ -226,6 +212,65 @@ app.get('/getUsername', async (req, res) => {
       });
   });
 
+  app.get('/forwardPlayerDetails', (req, res) => {
+    const { playerIds } = req.query;
+  
+    // Convert playerIds to an array if it's a single value
+    const playerIdsArray = Array.isArray(playerIds) ? playerIds : [playerIds];
+  
+    // Construct the query object to filter by playerIds
+    const query = {
+      _id: { $in: playerIdsArray },
+    };
+  
+    // Specify the fields you want to retrieve (goals, assists, and PIM)
+    const fieldsToRetrieve = {
+      goals: 1,
+      assists: 1,
+      PIM: 1,
+    };
+  
+    ForwardPlayer.find(query, fieldsToRetrieve)
+      .then((players) => {
+        console.log('Forward players:', players);
+        res.json(players);
+      })
+      .catch((error) => {
+        console.error('Error fetching forward players:', error);
+        res.status(500).json({ error: 'Failed to fetch forward players' });
+      });
+  });
+  
+  app.get('/defensivePlayerDetails', (req, res) => {
+    const { playerIds } = req.query;
+  
+    // Convert playerIds to an array if it's a single value
+    const playerIdsArray = Array.isArray(playerIds) ? playerIds : [playerIds];
+  
+    // Construct the query object to filter by playerIds
+    const query = {
+      _id: { $in: playerIdsArray },
+    };
+  
+    // Specify the fields you want to retrieve (goals, assists, and PIM)
+    const fieldsToRetrieve = {
+      goals: 1,
+      assists: 1,
+      PIM: 1,
+    };
+  
+    DefensivePlayer.find(query, fieldsToRetrieve)
+      .then((players) => {
+        console.log('Defensive players:', players);
+        res.json(players);
+      })
+      .catch((error) => {
+        console.error('Error fetching defensive players:', error);
+        res.status(500).json({ error: 'Failed to fetch defensive players' });
+      });
+  });
+  
+  
   app.post('/saveSelection', verifyToken, async (req, res) => {
     try {
       const userId = req.userId; // User ID obtained from token
@@ -252,7 +297,15 @@ app.get('/getUsername', async (req, res) => {
   
 
   app.get('/gamelineup', (req, res) => {
-    GameLineup.find({})
+    const { gameDate, teamName } = req.query;
+  
+    // Construct a query based on the provided parameters
+    const query = {
+      gameDate: gameDate,
+      teamName: teamName,
+    };
+  
+    GameLineup.find(query)
       .then((lineup) => {
         console.log('Lineup:', lineup);
         res.json(lineup);
@@ -262,6 +315,7 @@ app.get('/getUsername', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch lineup' });
       });
   });
+  
 
   // Retrieve previous lineups for a user (requires authentication)
 app.get('/getPreviousLineups', verifyToken, async (req, res) => {

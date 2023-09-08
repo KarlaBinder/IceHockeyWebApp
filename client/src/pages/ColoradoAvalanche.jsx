@@ -13,6 +13,13 @@ function ColoradoAvalanche() {
   const [selectedForwardPlayers, setSelectedForwardPlayers] = useState(['', '', '']);
   const [selectedDefensivePlayers, setSelectedDefensivePlayers] = useState(['', '']);
   const [lineupMatchup, setLineupMatchup] = useState('');
+  const [advice, setAdvice] = useState('');
+  const [forwardPlayerDetails, setForwardPlayerDetails] = useState([]);
+  const [defensivePlayerDetails, setDefensivePlayerDetails] = useState([]);
+  const [lineupAnalysis, setlineupAnalysis] = useState('');
+  const [mostGoalsPlayer, setMostGoalsPlayer] = useState('');
+  const [mostAssistsPlayer, setMostAssistsPlayer] = useState('');
+  const [mostPenaltyMinutesPlayer, setmostPenaltyMinutesPlayer] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resultModalContent, setResultModalContent] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -183,6 +190,7 @@ function ColoradoAvalanche() {
       });
       const lineup = response.data;
   
+  
       // Convert the selected forward lineup from IDs to names
     const selectedForwardLineup = selectedForwardPlayers
     .filter((playerId) => playerId) // Filter out empty player IDs
@@ -198,12 +206,49 @@ function ColoradoAvalanche() {
       const player = defensivePlayers.find((p) => p._id === playerId);
       return player ? player.playerName : ''; // Handle cases where player is not found
     });
+  // Assuming you have arrays of selected player IDs for forwards and defense
+  const forwardPlayerIds = selectedForwardPlayers.filter((playerId) => playerId !== '');
+  const defensivePlayerIds = selectedDefensivePlayers.filter((playerId) => playerId !== '');
+
+  const forwardPlayerDetails = await fetchPlayerDetails(forwardPlayerIds, true);
+  const defensivePlayerDetails = await fetchPlayerDetails(defensivePlayerIds, false);
+
 
       // Check if the selected lineup matches any type of lineup
-      const matchup = checkLineupMatch(lineup, selectedForwardLineup, selectedDefensiveLineup);
+      const { lineupMatchup, advice } = checkLineupMatch(lineup, selectedForwardLineup, selectedDefensiveLineup,selectedGameDate);
+      // Calculate and display lineup analysis
+    const lineupAnalysis = analyzeLineup(
+      selectedForwardPlayers,
+      selectedDefensivePlayers,
+      forwardPlayerDetails,
+      defensivePlayerDetails
+    );
 
-     // Inside your handleCheck function
-      setResultModalContent(matchup);
+    const { mostGoalsPlayer, mostAssistsPlayer,mostPenaltyMinutesPlayer } = findMostGoalsAndAssistsPlayers(
+      selectedForwardPlayers,
+      selectedDefensivePlayers,
+      forwardPlayers,
+      defensivePlayers
+    );
+    
+    // Combine lineup matchup and additional analysis
+const lineupMatchupContent = `${lineupMatchup}`;
+const adviceContent = `${advice}`;
+const lineupAnalysisContent = `${lineupAnalysis}`;
+const mostGoalsContent = `Most Goals Player: ${mostGoalsPlayer}`;
+const mostAssistsContent = `Most Assists Player: ${mostAssistsPlayer}`;
+const mostPenaltyMinutesContent = `Most Penalty Minutes Player: ${mostPenaltyMinutesPlayer}`;
+
+// Inside your handleCheck function
+setResultModalContent({
+  lineupMatchupContent,
+  adviceContent,
+  lineupAnalysisContent,
+  mostGoalsContent,
+  mostAssistsContent,
+  mostPenaltyMinutesContent
+});
+
       openModal();
 
   
@@ -211,58 +256,318 @@ function ColoradoAvalanche() {
       console.log(error);
     }
   };
+  const fetchPlayerDetails = async (playerIds, isForward) => {
+    const apiUrl = isForward
+      ? 'http://localhost:5000/forwardPlayerDetails'
+      : 'http://localhost:5000/defensivePlayerDetails';
   
-  // Function to check if the selected lineup matches any type of lineup
-  const checkLineupMatch = (lineup, selectedForwardLineup, selectedDefensiveLineup) => {
-    let forwardMatch = false;
-    let defensiveMatch = false;
-    let forwardMatchType = '';
-    let defensiveMatchType = '';
-  
-    for (const item of lineup) {
-      if (item.position === 'forward' && isSameLineup(selectedForwardLineup, item.lineup)) {
-        forwardMatch = true;
-        forwardMatchType = item.type;
-      }
-    }
-  
-    for (const item of lineup) {
-      if (item.position === 'defense' && isSameLineup(selectedDefensiveLineup, item.lineup)) {
-        defensiveMatch = true;
-        defensiveMatchType = item.type;
-      }
-    }
-  
-    if (forwardMatch && defensiveMatch) {
-      setLineupMatchup(`Forward lineup matches ${forwardMatchType}. Defensive lineup matches ${defensiveMatchType}.`);
-    } else if (forwardMatch) {
-      setLineupMatchup(`Forward lineup matches ${forwardMatchType}. Defensive lineup doesn't match any lineup.`);
-    } else if (defensiveMatch) {
-      setLineupMatchup(`Forward lineup doesn't match any lineup. Defensive lineup matches ${defensiveMatchType}.`);
-    } else {
-      setLineupMatchup('No lineup match found');
+    try {
+      const response = await axios.get(apiUrl, {
+        params: {
+          playerIds: playerIds,
+          gameDate: selectedGameDate, // Pass the selected game date as a parameter
+        },
+      });
+      return response.data; // Return the player details
+    } catch (error) {
+      console.error(error);
+      return []; // Return an empty array in case of an error
     }
   };
   
+  const findMostGoalsAndAssistsPlayers = (selectedForwardPlayers, selectedDefensivePlayers, forwardPlayers, defensivePlayers) => {
+    let mostGoalsPlayer = null;
+    let mostAssistsPlayer = null;
+    let mostPenaltyMinutesPlayer = null;
+    let mostGoals = 0;
+    let mostAssists = 0;
+    let mostPenaltyMinutes = 0;
+  
+    // Calculate most goals, assists, and penalty minutes for forwards
+    for (const playerId of selectedForwardPlayers) {
+      if (!playerId) continue; // Skip empty selections
+      const player = forwardPlayers.find((p) => p._id === playerId);
+      if (!player) continue; // Skip if player not found
+      if (player.goals > mostGoals) {
+        mostGoals = player.goals;
+        mostGoalsPlayer = player.playerName;
+      }
+      if (player.assists > mostAssists) {
+        mostAssists = player.assists;
+        mostAssistsPlayer = player.playerName;
+      }
+      if (player.PIM > mostPenaltyMinutes) {
+        mostPenaltyMinutes = player.PIM;
+        mostPenaltyMinutesPlayer = player.playerName;
+      }
+    }
+  
+    // Calculate most goals, assists, and penalty minutes for defensive players
+    for (const playerId of selectedDefensivePlayers) {
+      if (!playerId) continue; // Skip empty selections
+      const player = defensivePlayers.find((p) => p._id === playerId);
+      if (!player) continue; // Skip if player not found
+      if (player.goals > mostGoals) {
+        mostGoals = player.goals;
+        mostGoalsPlayer = player.playerName;
+      }
+      if (player.assists > mostAssists) {
+        mostAssists = player.assists;
+        mostAssistsPlayer = player.playerName;
+      }
+      if (player.PIM > mostPenaltyMinutes) {
+        mostPenaltyMinutes = player.PIM;
+        mostPenaltyMinutesPlayer = player.playerName;
+      }
+    }
+    // Set the state for mostGoalsPlayer, mostAssistsPlayer, and mostPenaltyMinutesPlayer within this function
+  setMostGoalsPlayer(mostGoalsPlayer);
+  setMostAssistsPlayer(mostAssistsPlayer);
+  setmostPenaltyMinutesPlayer(mostPenaltyMinutesPlayer);
+  
+    return {
+      mostGoalsPlayer,
+      mostAssistsPlayer,
+      mostPenaltyMinutesPlayer,
+    };
+  };
+
+// Function to analyze the lineup and player statistics
+const analyzeLineup = (selectedForwardPlayers, selectedDefensivePlayers, forwardPlayerDetails, defensivePlayerDetails) => {
+  // Calculate total goals, assists, and penalty minutes for selected players
+  const forwardGoals = forwardPlayerDetails.reduce((total, player) => total + player.goals, 0);
+  const forwardAssists = forwardPlayerDetails.reduce((total, player) => total + player.assists, 0);
+  const forwardPIM = forwardPlayerDetails.reduce((total, player) => total + player.PIM, 0);
+
+  const defensiveGoals = defensivePlayerDetails.reduce((total, player) => total + player.goals, 0);
+  const defensiveAssists = defensivePlayerDetails.reduce((total, player) => total + player.assists, 0);
+  const defensivePIM = defensivePlayerDetails.reduce((total, player) => total + player.PIM, 0);
+
+  let lineupAnalysis = '';
+
+  // Include information about goals, assists, and penalty minutes
+  lineupAnalysis += `Forward lineup: ${forwardGoals} goals, ${forwardAssists} assists, ${forwardPIM} penalty minutes\n`;
+  lineupAnalysis += `Defensive lineup: ${defensiveGoals} goals, ${defensiveAssists} assists, ${defensivePIM} penalty minutes\n`;
+
+  // Additional Analysis
+  if (forwardPlayerDetails.length > 0 || defensivePlayerDetails.length > 0) {
+    // Include additional analysis only when there is some content
+    lineupAnalysis += 'Additional Analysis: ';
+
+    if (forwardPlayerDetails.length > 0) {
+      lineupAnalysis += `Forward players found: ${forwardPlayerDetails.length}`;
+    }
+
+    if (defensivePlayerDetails.length > 0) {
+      if (forwardPlayerDetails.length > 0) {
+        lineupAnalysis += ', ';
+      }
+      lineupAnalysis += `Defensive players found: ${defensivePlayerDetails.length}`;
+    }
+
+    lineupAnalysis += '\n';
+  }
+  setlineupAnalysis(lineupAnalysis);
+
+  return lineupAnalysis;
+};
+
+const getBestForwardPlayers = (lineup) => {
+  const bestForwardLineup = lineup.find((item) => item.position === 'forward' && item.type === 'best lineup');
+  return bestForwardLineup ? bestForwardLineup.lineup : [];
+};
+
+const getGoodForwardPlayers = (lineup) => {
+  const goodForwardLineup = lineup.find((item) => item.position === 'forward' && item.type === 'good lineup');
+  return goodForwardLineup ? goodForwardLineup.lineup : [];
+};
+
+const getWorstForwardPlayers = (lineup) => {
+  const worstForwardLineup = lineup.find((item) => item.position === 'forward' && item.type === 'worst lineup');
+  return worstForwardLineup ? worstForwardLineup.lineup : [];
+};
+const getBestDefensivePlayers = (lineup) => {
+  const bestDefensiveLineup = lineup.find((item) => item.position === 'defense' && item.type === 'best lineup');
+  return bestDefensiveLineup ? bestDefensiveLineup.lineup : [];
+};
+
+const getGoodDefensivePlayers = (lineup) => {
+  const goodDefensiveLineup = lineup.find((item) => item.position === 'defense' && item.type === 'good lineup');
+  return goodDefensiveLineup ? goodDefensiveLineup.lineup : [];
+};
+
+const getWorstDefensivePlayers = (lineup) => {
+  const worstDefensiveLineup = lineup.find((item) => item.position === 'defense' && item.type === 'worst lineup');
+  return worstDefensiveLineup ? worstDefensiveLineup.lineup : [];
+};
+
+const normalize = (player) => player.replace(/\s/g, '').toLowerCase();
+
+const displayOriginalName = (normalizedName, originalNamesArray) => {
+  // Find the original name in the array and return it
+  const originalName = originalNamesArray.find((name) => normalize(name) === normalizedName);
+  return originalName || normalizedName; // Return the original name if found, or the normalized name if not found
+};
+
+
+const checkLineupMatch = (lineup, selectedForwardLineup, selectedDefensiveLineup) => {
+  let forwardMatch = false;
+  let defensiveMatch = false;
+  let forwardMatchType = '';
+  let defensiveMatchType = '';
+  let advice = ''; // Initialize advice here
+
+  for (const item of lineup) {
+    console.log('Checking Forward Lineup:', item);
+    if (item.position === 'forward' && isSameLineup(selectedForwardLineup, item.lineup)) {
+      forwardMatch = true;
+      forwardMatchType = item.type;
+    }
+    
+  }
+
+  const bestForwardPlayers = getBestForwardPlayers(lineup);
+  const goodForwardPlayers = getGoodForwardPlayers(lineup);
+  const worstForwardPlayers = getWorstForwardPlayers(lineup);
+  const isBestLineup = isSameLineup(selectedForwardLineup, bestForwardPlayers);
+  const isGoodLineup = isSameLineup(selectedForwardLineup, goodForwardPlayers);
+  const isWorstLineup = isSameLineup(selectedForwardLineup, worstForwardPlayers);
+  const normalizedSelectedForwardLineup = selectedForwardLineup.map((player) => normalize(player));
+  const bestForwardPlayersNormalized = bestForwardPlayers.map((player) => normalize(player));
+  const goodForwardPlayersNormalized = goodForwardPlayers.map((player) => normalize(player));
+  const worstForwardPlayersNormalized = worstForwardPlayers.map((player) => normalize(player));
+  let missingBestPlayers;
+  let missingGoodPlayers;
+  let missingWorstPlayers;
+
+  if (!isGoodLineup && !isBestLineup && !isWorstLineup) {
+     missingBestPlayers =  bestForwardPlayersNormalized.filter((player) => !normalizedSelectedForwardLineup.includes(player));
+     missingGoodPlayers = goodForwardPlayersNormalized.filter((player) => !normalizedSelectedForwardLineup.includes(player));
+     missingWorstPlayers = worstForwardPlayersNormalized.filter((player) => !normalizedSelectedForwardLineup.includes(player));
+     if (missingBestPlayers.length === 2) {
+      advice += `You have one player from the best forward lineup. Consider adding: ${missingBestPlayers.map(player => displayOriginalName(player, bestForwardPlayers)).join(', ')}. `;
+    } else if (missingBestPlayers.length === 1) {
+      advice += `You have two players from the best forward lineup. Consider adding: ${missingBestPlayers.map(player => displayOriginalName(player, bestForwardPlayers)).join(', ')}.  `;
+    } else if (missingGoodPlayers.length === 2) {
+      advice += `You have one player from the good forward lineup. Consider adding: ${missingGoodPlayers.map(player => displayOriginalName(player, goodForwardPlayers)).join(', ')}. `;
+    } else if (missingGoodPlayers.length === 1) {
+      advice += `You have two players from the good forward lineup. Consider adding: ${missingGoodPlayers.map(player => displayOriginalName(player, goodForwardPlayers)).join(', ')}. `;
+    } else if (missingWorstPlayers.length > 0) {
+      advice += `You also have players from the worst forward lineup. Consider choosing from the best lineup: ${bestForwardPlayers.join(', ')}. `;
+    }
+  }
+  if (isWorstLineup) {
+    advice += `You have players from the worst forward lineup. Consider choosing from the best lineup: ${bestForwardPlayers.join(', ')}.  `;
+  }
   
   
-  // Function to check if two lineups are the same regardless of the order
-  const isSameLineup = (lineup1, lineup2) => {
-    const lineup1Set = new Set(lineup1);
-    const lineup2Set = new Set(lineup2);
+  for (const item of lineup) {
+    console.log('Checking Defensive Lineup:', item);
+    if (item.position === 'defense' && isSameLineup(selectedDefensiveLineup, item.lineup)) {
+      defensiveMatch = true;
+      defensiveMatchType = item.type;
+    }
+  }
+
+  const bestDefensivePlayers = getBestDefensivePlayers(lineup); // Implement a function to get best defensive players
+const goodDefensivePlayers = getGoodDefensivePlayers(lineup); // Implement a function to get good defensive players
+const worstDefensivePlayers = getWorstDefensivePlayers(lineup); // Implement a function to get worst defensive players
+const isBestDefensiveLineup = isSameLineup(selectedDefensiveLineup, bestDefensivePlayers);
+const isGoodDefensiveLineup = isSameLineup(selectedDefensiveLineup, goodDefensivePlayers);
+const isWorstDefensiveLineup = isSameLineup(selectedDefensiveLineup, worstDefensivePlayers);
+const normalizedSelectedDefensiveLineup = selectedDefensiveLineup.map((player) => normalize(player));
+const bestDefensivePlayersNormalized = bestDefensivePlayers.map((player) => normalize(player));
+const goodDefensivePlayersNormalized = goodDefensivePlayers.map((player) => normalize(player));
+const worstDefensivePlayersNormalized = worstDefensivePlayers.map((player) => normalize(player));
+
+let missingBestDefensivePlayers;
+  let missingGoodDefensivePlayers;
+  let missingWorstDefensivePlayers;
+if (!isGoodDefensiveLineup && !isBestDefensiveLineup && !isWorstDefensiveLineup) {
+  missingBestDefensivePlayers = bestDefensivePlayersNormalized.filter((player) => !normalizedSelectedDefensiveLineup.includes(player));
+  missingGoodDefensivePlayers = goodDefensivePlayersNormalized.filter((player) => !normalizedSelectedDefensiveLineup.includes(player));
+  missingWorstDefensivePlayers = worstDefensivePlayersNormalized.filter((player) => !normalizedSelectedDefensiveLineup.includes(player));
+
+  if (missingBestDefensivePlayers.length === 1) {
+    advice += `You have one player from the best defensive lineup. Consider adding: ${missingBestDefensivePlayers.map(player => displayOriginalName(player, bestDefensivePlayers)).join(', ')}. `;
+  } else if (missingGoodDefensivePlayers.length === 1) {
+    advice += `You have one player from the good defensive lineup. Consider adding: ${missingGoodDefensivePlayers.map(player => displayOriginalName(player, goodDefensivePlayers)).join(', ')}. `;
+  } else if (missingWorstDefensivePlayers.length > 0) {
+    advice += `You also have players from the worst defensive lineup. Consider choosing from the best lineup: ${bestDefensivePlayers.join(', ')}. `;
+  }
+}
+
+if (isWorstDefensiveLineup) {
+  advice += `You have players from the worst defensive lineup. Consider choosing from the best lineup: ${bestDefensivePlayers.join(', ')}. `;
+}
+
+
+  console.log('Forward Match:', forwardMatch);
+  console.log('Forward Match Type:', forwardMatchType);
+  console.log('Defensive Match:', defensiveMatch);
+  console.log('Defensive Match Type:', defensiveMatchType);
+
+  if (forwardMatch && defensiveMatch) {
+    setLineupMatchup(`Forward lineup matches ${forwardMatchType}. Defensive lineup matches ${defensiveMatchType}.`);
+  } else if (forwardMatch) {
+    setLineupMatchup(`Forward lineup matches ${forwardMatchType}. Defensive lineup doesn't match any lineup.`);
+  } else if (defensiveMatch) {
+    setLineupMatchup(`Forward lineup doesn't match any lineup. Defensive lineup matches ${defensiveMatchType}.`);
+  } else {
+    setLineupMatchup('');
+  }
+
+
+
+  // Set the advice state
+  setAdvice(advice);
+  console.log('Forward Match Type:', forwardMatchType);
+  console.log('Advice:', advice);
+
+  // You can return both matchup and advice if needed
+  return { lineupMatchup, advice };
+};
+
+
   
-    if (lineup1Set.size !== lineup2Set.size) {
+const isSameLineup = (lineup1, lineup2) => {
+  console.log('Lineup 1:', lineup1);
+  console.log('Lineup 2:', lineup2);
+
+  // Normalize player names by removing spaces and converting to lowercase
+  const normalize = (player) => player.replace(/\s/g, '').toLowerCase();
+
+  // Check if both lineups are arrays and have the same length
+  if (!Array.isArray(lineup1) || !Array.isArray(lineup2) || lineup1.length !== lineup2.length) {
+    console.log('Lineups have different lengths or are not arrays.');
+    return false;
+  }
+
+  // Check if every element in lineup1 is also present in lineup2 (order doesn't matter)
+  for (const player of lineup1) {
+    const normalizedPlayer = normalize(player);
+    if (!lineup2.some((player2) => normalize(player2) === normalizedPlayer)) {
+      console.log(`Player "${player}" is not in lineup2.`);
       return false;
     }
-  
-    for (const player of lineup1Set) {
-      if (!lineup2Set.has(player)) {
-        return false;
-      }
+  }
+
+  // Check if every element in lineup2 is also present in lineup1 (order doesn't matter)
+  for (const player of lineup2) {
+    const normalizedPlayer = normalize(player);
+    if (!lineup1.some((player1) => normalize(player1) === normalizedPlayer)) {
+      console.log(`Player "${player}" is not in lineup1.`);
+      return false;
     }
+  }
+
+  // If all checks pass, the lineups are considered the same
+  console.log('Lineups are the same.');
+  return true;
+};
+
+
   
-    return true;
-  };
 
 
   return (
@@ -349,7 +654,12 @@ function ColoradoAvalanche() {
          <ResultModal
             isOpen={isModalOpen}
             closeModal={closeModal}
-            matchup={lineupMatchup}
+            lineupMatchup={lineupMatchup}
+            advice={advice} 
+            lineupAnalysis={lineupAnalysis}
+            mostGoalsPlayer={mostGoalsPlayer}
+            mostAssistsPlayer={mostAssistsPlayer}
+            mostPenaltyMinutesPlayer={mostPenaltyMinutesPlayer}
           />
         </div> 
        <div>
