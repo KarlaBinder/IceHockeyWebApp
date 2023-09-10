@@ -11,7 +11,6 @@ import GoldenKnights from './pages/GoldenKnights';
 
 
 function App() {
-  // You can still keep the isAuthenticated state here if needed
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (

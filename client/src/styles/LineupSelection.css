@@ -9,15 +9,81 @@
     background-size: cover;
     background-position: center;
   }
+  .lineup-navbar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between; 
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+  
+  .lineupnav-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .lineupnav-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .lineupm-navmenu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .team-navmenu li {
+    display: flex;
+    align-items: center;
+  }
+  
+  .home-logo {
+    margin-left: 20px;
+    height: 50px;
+    width: 50px;
+  }
+  
+  .dropdown {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-dropbtn {
+    margin-top: 10px;
+    margin-right: 20px; 
+    margin-bottom: 10px;
+  }
+  .lineup-dropdown-content {
+    display: none;
+    position: absolute;
+    background: transparent;
+    color: rgb(255, 98, 0);
+    border: none;
+    transition-duration: 0.4s;
+    min-width: 160px;
+    z-index: 1;
+    left: -10px; 
+  }
+  
+  .lineup-dropdown:hover .lineup-dropdown-content {
+    display: block;
+  }
 
-/* Styling for the Game Lineup section */
 h2 {
   font-size: 30px;
   margin-top: 10px;
   margin-bottom: 10px;
-  text-align: center; /* Center the text */
-  color: black; /* White text color */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better visibility */
+  text-align: center; 
+  color: black; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
 }
 
 form {
@@ -27,41 +93,40 @@ form {
   gap: 10px;
 }
 
-/* Styling for the Select Game Date section */
+
 label[for="gameDate"] {
   font-weight: bold;
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
-  text-align: center; /* Center the text */
-  color: black; /* White text color */
+  text-align: center; 
+  color: black; 
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 select#gameDate {
   width: 100%;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.5); /* Darker background with 50% opacity */
-  color: white; /* Text color */
-  border: 2px solid rgb(255, 98, 0); /* Border style */
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: white; 
+  border: 2px solid rgb(255, 98, 0); 
   border-radius: 4px;
-  box-shadow: 2px 2px 4px rgb(255, 98, 0); /* Box shadow */
-  transition-duration: 0.4s; /* Transition effect duration */
+  box-shadow: 2px 2px 4px rgb(255, 98, 0); 
+  transition-duration: 0.4s; 
   cursor: pointer;
 }
 
-/* Hover effect */
+
 select#gameDate:hover {
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover with 70% opacity */
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* Focus effect */
+
 select#gameDate:focus {
-  outline: none; /* Remove default focus outline */
-  border-color: #ff6200; /* Change border color on focus */
+  outline: none; 
+  border-color: #ff6200; 
 }
 
-/* Styling for Forward and Defensive Lineup sections */
 .lineup-section {
   width: 100%;
 }
@@ -70,45 +135,43 @@ h3 {
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
-  text-align: center; /* Center the text */
-  color: black; /* White text color */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better visibility */
+  text-align: center; 
+  color: black; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
 }
 
 label[for^="forwardPlayer"], label[for^="defensivePlayer"] {
   font-size: 18px;
-  color: black; /* White text color */
+  color: black; 
   font-weight: bold;
   margin-top: 20px;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Styling for player selection dropdowns */
+
 select[id^="forwardPlayer"], select[id^="defensivePlayer"] {
   width: 100%;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.5); /* Darker background with 50% opacity */
-  color: white; /* Text color */
-  border: 2px solid rgb(255, 98, 0); /* Border style */
-  border-radius: 4px;
-  box-shadow: 2px 2px 4px rgb(255, 98, 0); /* Box shadow */
-  transition-duration: 0.4s; /* Transition effect duration */
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: white; 
+  border: 2px solid rgb(255, 98, 0); 
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s; 
   cursor: pointer;
 }
 
-/* Hover effect for player selection dropdowns */
 select[id^="forwardPlayer"]:hover, select[id^="defensivePlayer"]:hover {
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover with 70% opacity */
+  background-color: rgba(0, 0, 0, 0.7); 
 }
 
-/* Focus effect for player selection dropdowns */
+
 select[id^="forwardPlayer"]:focus, select[id^="defensivePlayer"]:focus {
-  outline: none; /* Remove default focus outline */
-  border-color: #ff6200; /* Change border color on focus */
+  outline: none; 
+  border-color: #ff6200; 
 }
 
-/* Styling for the buttons */
+
 .buttons {
   display: flex;
   justify-content: space-around;
@@ -140,14 +203,12 @@ select[id^="forwardPlayer"]:focus, select[id^="defensivePlayer"]:focus {
   transition-duration: 0.4s;
 
   cursor: pointer;
-  margin-left: 10px; /* Add margin to create space */
+  margin-left: 10px; 
 }
 
 .buttons button[type="submit"]:hover, button[type="button"]:hover {
-  background-color: #1a2833; /* Slightly darker blue on hover */
+  background-color: #1a2833; 
 }
-
-/* ResultModal.css (You can create this CSS file) */
 
 .modal {
   position: absolute;
@@ -158,15 +219,15 @@ select[id^="forwardPlayer"]:focus, select[id^="defensivePlayer"]:focus {
   max-width: 300px;
   text-align: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border: 2px solid orange; /* Add an orange border */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)); /* Add a shining effect */
+  border: 2px solid orange; 
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)); 
 }
 
-/* Updated modal content styles */
+
 .modal-content {
   margin-bottom: 20px;
-  font-size: 16px; /* Increase text size */
-  line-height: 1.5; /* Add some separation between lines */
+  font-size: 16px; 
+  line-height: 1.5; 
 }
 
 .modal-content button {
@@ -183,15 +244,14 @@ select[id^="forwardPlayer"]:focus, select[id^="defensivePlayer"]:focus {
   cursor: pointer;
 }
 
-/* Change button color on hover */
+
 .modal-content button:hover {
-  background-color: #1a2833; /* Slightly darker blue on hover */
+  background-color: #1a2833; 
 }
 
-/* Styling for the lineupMatchup message */
 .lineup {
   font-size: 18px;
-  color: #2d3e50; /* Dark blue text color */
+  color: #2d3e50; 
   font-weight: bold;
   margin-top: 20px;
   text-align: center;

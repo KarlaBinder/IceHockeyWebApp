@@ -14,14 +14,26 @@
 }
 
 .team-navbar {
-  display: flex;
-  justify-content: space-between; /* Add space between elements */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  justify-content: space-between; 
   align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
 .team-navmenu {
@@ -39,34 +51,48 @@
 
 .home-logo {
   margin-left: 20px;
-  margin-right: 1300px;
   height: 50px;
-  width:50px;
+  width: 50px;
 }
-
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-.profile-dropbtn{
-  margin-top: 10px;
-  margin-bottom: 10px;
+.profile-dropbtn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
+  transition-duration: 0.4s;
+  padding: 10px 20px;
+  cursor: pointer;
+  vertical-align: middle;
+  text-transform: uppercase;
+  margin-right: 40px;;
 }
 
-.dropdown-content {
+
+.profile-dropdown-content {
   display: none;
   position: absolute;
   background: transparent;
   color: rgb(255, 98, 0);
   border: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transition-duration: 0.4s;
   min-width: 160px;
   z-index: 1;
-  left: -10px; /* Adjust this value as needed to position the dropdown */
+  right: -20px; 
+  top: 100%;
 }
 
-.dropdown:hover .dropdown-content {
+.profile-dropdown-content form {
+  padding: 10px;
+}
+
+.dropdown:hover .profile-dropdown-content {
   display: block;
 }
 
@@ -78,6 +104,7 @@
   font-size: 17px; 
   background-color: transparent;
   border: none;
+  cursor:pointer;
 }
 
 .title-container {
@@ -127,6 +154,8 @@
 }
 
 @media (max-width: 768px) {
+  
+
   .title-container {
     margin-top: 20px; 
   }
@@ -142,11 +171,12 @@
     flex: 1; 
     margin: 10px; 
   }
+  
 }
 
 @media (max-width: 460px) {
   .title-container {
-    margin-top: 700px; 
+    margin-top: 100px; 
   }
 
   .picture-container {

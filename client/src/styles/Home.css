@@ -43,8 +43,8 @@
     font-size: 32px; 
   }
 
-  /* Add this CSS to your stylesheet */
-  .dropdown {
+  
+.dropdown {
     position: relative;
     display: inline-block;
   }
@@ -69,7 +69,7 @@
   cursor: pointer;
   vertical-align: middle;
   text-transform: uppercase;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 .dropdown-content label {
   margin-inline-end: auto;
@@ -85,7 +85,7 @@
   transition-duration: 0.4s;
   min-width: 160px;
   z-index: 1;
-  left: -50px; /* Adjust this value as needed to position the dropdown */
+  left: -50px;
 }
 
 .dropdown-content form {
@@ -96,7 +96,7 @@
   display: block;
 }
 
-/* Style form inputs and buttons */
+
 input[type="text"],
 input[type="password"],
 input[type="email"] {
@@ -112,7 +112,7 @@ input[type="email"] {
 
 .login-button,
 .register-button {
-  background-color: rgb(255, 98, 0); /* Orange background color */
+  background-color: rgb(255, 98, 0); 
   color: white;
   border: 2px solid rgb(255, 98, 0);
   border-radius: 42x;
@@ -124,7 +124,7 @@ input[type="email"] {
   display: inline-block;
   border-radius: 3px;
   cursor: pointer;
-  margin-top: 5px; /* Margin top of 5px */
+  margin-top: 5px; 
 }
 
 
@@ -133,7 +133,18 @@ input[type="email"] {
   background-color: #1a2833;
 }
 
-/* Add more CSS to style your form as needed */
+
+.message {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px; 
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+
 .profile-dropbtn{
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -145,7 +156,7 @@ input[type="email"] {
   cursor: pointer;
   vertical-align: middle;
   text-transform: uppercase;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .profile-dropdown-content {
@@ -158,19 +169,17 @@ input[type="email"] {
   transition-duration: 0.4s;
   min-width: 160px;
   z-index: 1;
-  right: 0; /* Adjust this value to control the position from the right */
-  top: 100%; /* Position the dropdown below the button */
+  right: -20px; 
+  top: 100%; 
 }
 
-/* Rest of your CSS remains the same */
 
 
 .profile-dropdown-content form {
   padding: 10px;
 }
 
-.dropdown:hover .profile-dropdown-content,
-.dropdown:hover .profile-dropbtn {
+.dropdown:hover .profile-dropdown-content {
   display: block;
 }
 
@@ -182,6 +191,7 @@ input[type="email"] {
     font-size: 17px; 
     background-color: transparent;
     border: none;
+    cursor: pointer;
   }
 
   .button-container{
@@ -248,11 +258,20 @@ input[type="email"] {
       bottom: 60px;
       left: 10px;
     }
+    
+    .dropdown-content{
+        background: #1a2833 !important; 
+    }
   }
 
   @media (max-width: 590px) {
     .button-container {
       display: flex;
       justify-content: flex-start;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .bottom-text{
+      background-color: rgba(0, 0, 0, 0.5);
     }
   }

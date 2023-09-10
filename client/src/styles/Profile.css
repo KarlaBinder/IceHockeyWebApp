@@ -51,13 +51,13 @@
   display: flex;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
-  justify-content: center; /* Center the items horizontally */
-  align-items: center; /* Center the items vertically */
+  justify-content: center; 
+  align-items: center; 
 }
 
-/* Add the active class to style the currently visible lineup box */
+
 .lineup-box.active {
-  display: block; /* Show the lineup box */
+  display: block; 
 }
 
 .lineup-box {
@@ -73,7 +73,7 @@
   margin-right: 20px;
   display: none;
 }
-/* Style for lineup-box */
+
 .lineup-box {
   margin-top: 40px;
   font-size: 28px;
@@ -91,12 +91,12 @@
   margin-right: 20px;
 }
 
-/* Active lineup-box */
+
 .lineup-box.active {
-  display: block; /* Show active lineup box */
+  display: block; 
 }
 
-/* Style for lineup header */
+
 .lineup-header {
   margin-bottom: 10px;
 }
@@ -106,7 +106,6 @@
   font-size: 18px;
 }
 
-/* Style for player list */
 .player-list {
   margin-bottom: 10px;
 }
@@ -114,11 +113,10 @@
 .list-title {
   font-weight: bold;
   font-size: 16px;
-  color: #ff6600; /* Orange text color */
+  color: #ff6600; 
   font-weight: bold;
 }
 
-/* Style for player ul and li */
 .player-ul {
   list-style: none;
   padding-left: 0;
@@ -129,18 +127,17 @@
   font-size: 16px;
   list-style: none;
 }
-/* Style for highlighted text */
+
 .highlight-orange {
-  color: #ff6600; /* Orange text color */
+  color: #ff6600; 
   font-weight: bold;
 }
 
 .highlight-blue {
-  color: #1a1a1a; /* Dark blue text color */
+  color: #1a1a1a; 
   font-weight: bold;
 }
 
-/* Rest of the previous styles for lineup-box, lineup-header, player list, and player li remain the same */
 
 
 
@@ -156,12 +153,50 @@
 
 .slider-prev-button {
   left: 0;
-  margin-left: 80px;
+  margin-left: 0;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
 }
 
 .slider-next-button {
   right: 0;
-  margin-right: 80px;
+  margin-right: 0;
+  border: 2px solid rgb(255, 98, 0);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgb(255, 98, 0);
 }
 
+@media (max-width: 1000px) {
   
+
+  .lineup-box {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .player-li {
+    margin-left: 50px;
+    list-style: none;
+  }
+  .slider-prev-button {
+    left: -50px; 
+    background: white;
+  }
+  
+  .slider-next-button {
+    right: -50px; 
+    background: white;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-text {
+    font-size: 24px; 
+  }
+
+  .previous-lineups {
+    margin-top: 40px; 
+    font-size: 20px; 
+  }
+}

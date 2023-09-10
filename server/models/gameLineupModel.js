@@ -14,14 +14,13 @@ const gameLineupSchema = new mongoose.Schema({
     validate: {
       validator: function (lineup) {
         if (this.position === 'defense') {
-          // For defense position, ensure exactly 2 elements in the lineup array
+          
           return Array.isArray(lineup) && lineup.length === 2;
         } else if (this.position === 'forward') {
-          // For forward position, ensure exactly 3 elements in the lineup array
+          
           return Array.isArray(lineup) && lineup.length === 3;
         } else {
-          // Handle other positions here if needed
-          // For now, allow any number of elements for other positions
+          
           return Array.isArray(lineup);
         }
       },
