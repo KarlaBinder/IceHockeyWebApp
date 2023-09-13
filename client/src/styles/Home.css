@@ -44,7 +44,7 @@
   }
 
   
-.dropdown {
+.h-dropdown {
     position: relative;
     display: inline-block;
   }
@@ -71,11 +71,11 @@
   text-transform: uppercase;
   margin-right: 40px;
 }
-.dropdown-content label {
+.h-dropdown-content label {
   margin-inline-end: auto;
 }
 
-.dropdown-content {
+.h-dropdown-content {
   display: none;
   position: absolute;
   background: transparent;
@@ -88,11 +88,11 @@
   left: -50px;
 }
 
-.dropdown-content form {
+.h-dropdownn-content form {
   padding: 10px;
 }
 
-.dropdown:hover .dropdown-content {
+.h-dropdown:hover .h-dropdown-content {
   display: block;
 }
 

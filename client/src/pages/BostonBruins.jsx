@@ -27,6 +27,8 @@ function BostonBruins() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profileUsername, setProfileUsername] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [existingLineups, setExistingLineups] = useState([]);
 
   const navigate = useNavigate();
 
@@ -151,9 +153,32 @@ function BostonBruins() {
     });
   };
 
+  useEffect(() => {
+    fetchExistingLineups();
+  }, []);
+
+  const fetchExistingLineups = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("authToken");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.get(`http://localhost:5000/getPreviousLineups?userId=${userId}`, {
+        headers,
+      });
+
+      setExistingLineups(response.data);
+    } catch (error) {
+      console.error("Error fetching existing lineups:", error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+ 
     const userId = localStorage.getItem("userId");
     if (!userId) {
       console.error("User ID not found in local storage");
@@ -182,14 +207,35 @@ function BostonBruins() {
         ),
       userId: userId,
     };
+    const isLineupAlreadySaved = existingLineups.some((existingLineup) => {
+      return (
+        existingLineup.teamName === data.teamName &&
+        existingLineup.gameDate === data.gameDate &&
+        JSON.stringify(existingLineup.forwardLineup) === JSON.stringify(data.forwardLineup) &&
+        JSON.stringify(existingLineup.defensiveLineup) === JSON.stringify(data.defensiveLineup)
+      );
+    });
+
+    if (isLineupAlreadySaved) {
+      setNotificationMessage("This lineup has already been saved.");
+      return;
+    }
 
     try {
       await axios.post("http://localhost:5000/saveSelection", data, {
         headers,
       });
       console.log("Selection saved successfully");
+      setNotificationMessage("Lineup saved successfully!");
+      setTimeout(() => {
+        setNotificationMessage("");
+      }, 3000);
     } catch (error) {
       console.log(error);
+      setNotificationMessage("Failed to save lineup. Please try again.");
+      setTimeout(() => {
+        setNotificationMessage("");
+      }, 3000);
     }
   };
 
@@ -559,29 +605,29 @@ function BostonBruins() {
   return (
     <div className="background-container">
       <div className="lineup-navbar">
-          <div className="lineupnav-left">
-            <ul className="lineup-navmenu">
-              <li>
-                <a href="/" onClick={handleHomePageClick}>
-                  <img className="home-logo" src={homeLogo} alt="Home" />
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="lineupnav-right">
-            <div className="dropdown">
-              <button className="profile-dropbtn">{`${profileUsername}`}</button>
-              <div className="profile-dropdown-content">
-                <Link to="/profile" className="drop-con">
-                  View Profile
-                </Link>
-                <button className="drop-con" onClick={handleLogoutClick}>
-                  Logout
-                </button>
-              </div>
+        <div className="lineupnav-left">
+          <ul className="team-navmenu">
+            <li>
+              <a href="/" onClick={handleHomePageClick}>
+                <img className="home-logo" src={homeLogo} alt="Home" />
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="lineupnav-right">
+          <div className="dropdown">
+            <button className="profile-dropbtn">{`${profileUsername}`}</button>
+            <div className="profile-dropdown-content">
+              <Link to="/profile" className="drop-con">
+                View Profile
+              </Link>
+              <button className="drop-con" onClick={handleLogoutClick}>
+                Logout
+              </button>
             </div>
           </div>
         </div>
+      </div>
       <div className="container">
         <h2>Game Lineup</h2>
         <form onSubmit={handleSubmit}>
@@ -666,7 +712,9 @@ function BostonBruins() {
             />
           </div>
           <div></div>
-        </form>
+        </form>{notificationMessage && (
+              <div className="notification">{notificationMessage}</div>
+            )}
         <footer className="team-footer">
           <div className="teamfooter-content">
             <p>&copy; 2023 FERIT All rights reserved.</p>

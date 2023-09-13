@@ -168,9 +168,9 @@ function Home() {
 
             <>
               <li>
-                <div className="dropdown">
+                <div className="h-dropdown">
                   <button className="dropbtnLog">Login</button>
-                  <div className="dropdown-content">
+                  <div className="h-dropdown-content">
                     <form onSubmit={handleLoginSubmit}>
                       <label htmlFor="username">Username</label>
                       <input
@@ -199,9 +199,9 @@ function Home() {
                 </div>
               </li>
               <li>
-                <div className="dropdown">
+                <div className="h-dropdown">
                   <button className="dropbtnReg">Register</button>
-                  <div className="dropdown-content">
+                  <div className="h-dropdown-content">
                     <form onSubmit={handleRegistrationSubmit}>
                       <label htmlFor="newUsername">Username</label>
                       <input
